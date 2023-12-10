@@ -1,0 +1,8 @@
+2023-12-08T14:09:23.041Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-08T14:17:05.001Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-08T14:20:51.339Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-08T14:21:51.568Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-09T11:24:42.579Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-09T11:30:19.454Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-09T11:46:37.022Z: An error occurred - ENOENT: no such file or directory, open './database/database.json'
+2023-12-10T12:34:08.743Z: An error occurred - Unexpected end of JSON input

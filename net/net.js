@@ -53,19 +53,21 @@ const client = (ip, callback, onData) => {
   })
 }
 
-//Vueと通信
+//内部通信用
 const api = (apis) => {
   app.post("*", function (req, res) {
     const handler = apis[req.path]
+    console.log("API: " + req.path)
     if (handler) {
       handler(req, res)
     } else {
       res.status(404).send("関数がありません。")
+      console.log("エラー 関数がありません。")
     }
   })
 
   app.listen(3000, function () {
-    console.log("内部API用サーバーをポート" + 3000+ "で起動。")
+    console.log("内部コマンドラインAPI用サーバーをポート" + 3000+ "で起動。")
   })
 }
 
@@ -73,5 +75,5 @@ module.exports = {
   //定義名:値,
   server: server,
   client: client,
-  api: api,
+  api: api
 }

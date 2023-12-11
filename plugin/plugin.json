@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    { "name": "garlicBar", "require-path": "./plugin/garlicBar.js" },
+    { "name": "openkitchen", "require-path": "./plugin/openkitchen.js" }
+  ]
+}

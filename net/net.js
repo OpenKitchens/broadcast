@@ -7,21 +7,34 @@ const bodyParser = require("body-parser")
 const app = express()
 app.use(bodyParser.json())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
-// 特定のオリジンからのリクエストを許可
+  // 特定のオリジンからのリクエストを許可
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS") // 許可するHTTPメソッドを指定
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  )
   next()
 })
 
 //外部通信用
-const server = (callback) => {
+const server = (serverAPIs) => {
   const io = net.createServer((socket) => {
     console.log("Client connected: " + socket.remoteAddress)
 
     socket.on("data", (data) => {
-      callback(socket, data)
+      data = JSON.parse(data)
+      console.log("serverAPI: " + data.api)
+      const handler = serverAPIs[data.api]
+      if (handler) {
+        handler(socket, data)
+      } else {
+        socket.write("関数がありません。")
+        console.log("エラー 関数がありません。")
+      }
+
+      console.log("Received: " + data)
     })
 
     socket.on("end", () => {
@@ -30,7 +43,9 @@ const server = (callback) => {
   })
 
   io.listen(broadcast.OpenPort, () => {
-    console.log("外部アクセスサーバーをポート" + broadcast.OpenPort + "で起動。")
+    console.log(
+      "外部アクセスサーバーをポート" + broadcast.OpenPort + "で起動。"
+    )
   })
 }
 
@@ -39,13 +54,12 @@ const client = (ip, callback, onData) => {
   const io = net.createConnection({ port: 25565, host: ip }, () => {
     // 'connect' listener.
     console.log("サーバーとの接続ができました。")
-    io.write("Hello, server!\r\n")
     callback(io)
   })
 
   io.on("data", (data) => {
     console.log(data.toString())
-    onData(io, data)
+    onData(io, JSON.parse(data))
   })
 
   io.on("end", () => {
@@ -67,7 +81,7 @@ const api = (apis) => {
   })
 
   app.listen(3000, function () {
-    console.log("内部コマンドラインAPI用サーバーをポート" + 3000+ "で起動。")
+    console.log("内部コマンドラインAPI用サーバーをポート" + 3000 + "で起動。")
   })
 }
 
@@ -75,5 +89,5 @@ module.exports = {
   //定義名:値,
   server: server,
   client: client,
-  api: api
+  api: api,
 }

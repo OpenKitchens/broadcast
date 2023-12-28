@@ -93,6 +93,11 @@ class Database {
     }
   }
 
+  addToDatabaseEnd(data) {
+    const id = Object.keys(this.database).length + 1;
+    this.addToDatabase(id.toString(), data);
+  }
+
   initializeDatabase() {
     this.loadDatabase()
   }
